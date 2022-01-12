@@ -3,15 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: donghunl <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: donghunl <donghunl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 14:00:56 by donghunl          #+#    #+#             */
-/*   Updated: 2022/01/08 14:02:25 by donghunl         ###   ########.fr       */
+/*   Updated: 2022/01/10 14:15:21 by donghunl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include <unistd.h>
 
 void	ft_putstr(char *str)
 {
-	write(1, str, strlen(str));
+	int	p;
+
+	p = 0;
+	while (str[p] != '\0')
+		p++;
+	write(1, str, p);
 }

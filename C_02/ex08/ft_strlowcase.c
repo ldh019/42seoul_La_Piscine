@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_strlowcase.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: donghunl <donghunl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/08 14:03:00 by donghunl          #+#    #+#             */
-/*   Updated: 2022/01/10 14:15:37 by donghunl         ###   ########.fr       */
+/*   Created: 2022/01/10 15:02:28 by donghunl          #+#    #+#             */
+/*   Updated: 2022/01/10 15:03:23 by donghunl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strlen(char *str)
+char	*ft_strlowcase(char *str)
 {
-	int	p;
+	int	i;
 
-	p = 0;
-	while (str[p] != '\0')
-		p++;
-	return (p);
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] >= 'A' && str[i] <= 'Z')
+			str[i] += 32;
+		i++;
+	}
+	return (str);
 }

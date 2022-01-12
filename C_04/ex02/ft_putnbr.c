@@ -1,21 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_putnbr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: donghunl <donghunl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/08 14:03:00 by donghunl          #+#    #+#             */
-/*   Updated: 2022/01/10 14:15:37 by donghunl         ###   ########.fr       */
+/*   Created: 2022/01/12 15:45:59 by donghunl          #+#    #+#             */
+/*   Updated: 2022/01/12 15:46:04 by donghunl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strlen(char *str)
+#include <unistd.h>
+void	ft_putnbr(int nb)
 {
-	int	p;
+	char	a;
 
-	p = 0;
-	while (str[p] != '\0')
-		p++;
-	return (p);
+	if (nb < 0)
+	{
+		write(1, "-", 1);
+		nb *= -1;
+		ft_putnbr(nb);
+	}
+	else if (nb < 10)
+	{
+		a = nb + 48;
+		write(1, &a, 1);
+	}
+	else
+	{
+		ft_putnbr(nb / 10);
+		a = nb % 10 + 48;
+		write(1, &a, 1);
+	}
 }

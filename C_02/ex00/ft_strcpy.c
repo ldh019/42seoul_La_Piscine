@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: donghunl <donghunl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/08 14:03:00 by donghunl          #+#    #+#             */
-/*   Updated: 2022/01/10 14:15:37 by donghunl         ###   ########.fr       */
+/*   Created: 2022/01/10 13:12:24 by donghunl          #+#    #+#             */
+/*   Updated: 2022/01/10 14:24:23 by donghunl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strlen(char *str)
+char	*ft_strcpy(char *dest, char *src)
 {
-	int	p;
+	int	i;
 
-	p = 0;
-	while (str[p] != '\0')
-		p++;
-	return (p);
+	i = 0;
+	while (src[i] != '\0')
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
 }

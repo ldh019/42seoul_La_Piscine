@@ -1,21 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: donghunl <donghunl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/08 14:03:00 by donghunl          #+#    #+#             */
-/*   Updated: 2022/01/10 14:15:37 by donghunl         ###   ########.fr       */
+/*   Created: 2022/01/12 15:48:45 by donghunl          #+#    #+#             */
+/*   Updated: 2022/01/12 15:56:30 by donghunl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strlen(char *str)
+int	ft_atoi(char *str)
 {
-	int	p;
+	int	m;
+	int	ans;
 
-	p = 0;
-	while (str[p] != '\0')
-		p++;
-	return (p);
+	m = 1;
+	while (*str < '0' || *str > '9')
+	{
+		if (*str == '-')
+			m *= -1;
+		str++;
+	}
+	ans = 0;
+	while (*str >= '0' && *str <= '9')
+	{
+		ans *= 10;
+		ans += *str - 48;
+		str++;
+	}
+	ans *= m;
+	return (ans);
 }

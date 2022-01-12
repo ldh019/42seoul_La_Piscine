@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: donghunl <donghunl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/08 14:03:00 by donghunl          #+#    #+#             */
-/*   Updated: 2022/01/10 14:15:37 by donghunl         ###   ########.fr       */
+/*   Created: 2022/01/12 15:44:33 by donghunl          #+#    #+#             */
+/*   Updated: 2022/01/12 15:44:40 by donghunl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strlen(char *str)
+#include <unistd.h>
+
+void	ft_putstr(char *str)
 {
 	int	p;
 
 	p = 0;
 	while (str[p] != '\0')
 		p++;
-	return (p);
+	write(1, str, p);
 }
