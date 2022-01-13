@@ -6,7 +6,7 @@
 /*   By: donghunl <donghunl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/12 09:20:10 by donghunl          #+#    #+#             */
-/*   Updated: 2022/01/12 10:31:51 by donghunl         ###   ########.fr       */
+/*   Updated: 2022/01/13 17:37:25 by donghunl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,26 @@ char	hexa(int c);
 
 void	*ft_print_memory(void *addr, unsigned int size)
 {
-	if (size > 16)
-		size = 16;
-	print_addr((unsigned long long)addr, 0);
-	write(1, ":", 1);
-	write(1, " ", 1);
-	print_hexa_data((char *)addr, size);
-	print_real_data((char *)addr, size);
-	write(1, "\n", 1);
-	return (addr);
+	void	*ret;
+	int		tmp_size;
+
+	ret = addr;
+	while (size > 0)
+	{
+		if (size > 16)
+			tmp_size = 16;
+		else
+			tmp_size = size;
+		print_addr((unsigned long long)addr, 0);
+		write(1, ":", 1);
+		write(1, " ", 1);
+		print_hexa_data((char *)addr, tmp_size);
+		print_real_data((char *)addr, tmp_size);
+		write(1, "\n", 1);
+		addr += 16;
+		size -= tmp_size;
+	}
+	return (ret);
 }
 
 void	print_addr(unsigned long long addr, int d)

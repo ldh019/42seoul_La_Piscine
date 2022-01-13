@@ -6,12 +6,11 @@
 /*   By: donghunl <donghunl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/12 16:02:46 by donghunl          #+#    #+#             */
-/*   Updated: 2022/01/13 10:59:12 by donghunl         ###   ########.fr       */
+/*   Updated: 2022/01/13 19:21:12 by donghunl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
-#include <stdio.h>
 
 int		base_check(char *base, int *len);
 void	rev_print(int nbr, char *base, int len);
@@ -38,6 +37,8 @@ int	base_check(char *base, int *len)
 	i = 0;
 	while (base[i] != '\0')
 	{
+		if (base[i] < 32 || base[i] == 127)
+			return (0);
 		if (base[i] == '+' || base[i] == '-')
 			return (0);
 		j = i + 1;

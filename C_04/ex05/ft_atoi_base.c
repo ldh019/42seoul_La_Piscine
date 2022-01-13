@@ -6,11 +6,9 @@
 /*   By: donghunl <donghunl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 11:02:14 by donghunl          #+#    #+#             */
-/*   Updated: 2022/01/13 14:21:04 by donghunl         ###   ########.fr       */
+/*   Updated: 2022/01/13 19:26:28 by donghunl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include <stdio.h>
 
 int	ft_atoi(char *str, char *base, int len);
 int	base_check(char *base, int *len);
@@ -27,9 +25,9 @@ int	ft_atoi_base(char *str, char *base)
 
 int	ft_atoi(char *str, char *base, int len)
 {
-	int	m;
-	int	ans;
-	int	tmp;
+	int		m;
+	long	ans;
+	int		tmp;
 
 	m = 1;
 	while (ret_vlu(base, *str) == -1)
@@ -49,7 +47,8 @@ int	ft_atoi(char *str, char *base, int len)
 		str++;
 	}
 	ans *= m;
-	return (ans);
+	m = (int)ans;
+	return (m);
 }
 
 int	base_check(char *base, int *len)
@@ -60,6 +59,8 @@ int	base_check(char *base, int *len)
 	i = 0;
 	while (base[i] != '\0')
 	{
+		if (base[i] < 32 || base[i] == 127)
+			return (0);
 		if (base[i] == '+' || base[i] == '-')
 			return (0);
 		j = i + 1;
@@ -80,7 +81,6 @@ int	base_check(char *base, int *len)
 int	ret_vlu(char *base, char find)
 {
 	int		i;
-	int		j;
 
 	i = 0;
 	while (base[i] != '\0')

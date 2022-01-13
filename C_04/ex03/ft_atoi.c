@@ -6,17 +6,17 @@
 /*   By: donghunl <donghunl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/12 15:48:45 by donghunl          #+#    #+#             */
-/*   Updated: 2022/01/12 15:56:30 by donghunl         ###   ########.fr       */
+/*   Updated: 2022/01/13 18:35:06 by donghunl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 int	ft_atoi(char *str)
 {
-	int	m;
-	int	ans;
+	int		m;
+	long	ans;
 
 	m = 1;
-	while (*str < '0' || *str > '9')
+	while (*str == ' ' || *str == '+' || *str == '-')
 	{
 		if (*str == '-')
 			m *= -1;
@@ -30,5 +30,6 @@ int	ft_atoi(char *str)
 		str++;
 	}
 	ans *= m;
-	return (ans);
+	m = (int)ans;
+	return (m);
 }

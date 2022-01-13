@@ -8,6 +8,6 @@ int main()
 	char b[] = "idg";
 
 	printf("%d", ft_strlcpy(a, b, 3));
-
+	printf("%s", a);
 	return 0;
 }
