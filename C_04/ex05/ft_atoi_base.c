@@ -6,27 +6,30 @@
 /*   By: donghunl <donghunl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 11:02:14 by donghunl          #+#    #+#             */
-/*   Updated: 2022/01/13 11:14:59 by donghunl         ###   ########.fr       */
+/*   Updated: 2022/01/13 14:21:04 by donghunl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_atoi(char *str, char *base);
+#include <stdio.h>
+
+int	ft_atoi(char *str, char *base, int len);
 int	base_check(char *base, int *len);
-int ret_vlu(char *base, char find);
+int	ret_vlu(char *base, char find);
 
 int	ft_atoi_base(char *str, char *base)
 {
-	int len;
+	int	len;
 
 	if (base_check(base, &len) == 0)
 		return (0);
+	return (ft_atoi(str, base, len));
 }
 
-int	ft_atoi(char *str, char *base)
+int	ft_atoi(char *str, char *base, int len)
 {
 	int	m;
 	int	ans;
-	int tmp;
+	int	tmp;
 
 	m = 1;
 	while (ret_vlu(base, *str) == -1)
@@ -39,11 +42,10 @@ int	ft_atoi(char *str, char *base)
 	while (1)
 	{
 		tmp = ret_vlu(base, *str);
-		if(tmp == -1)
+		if (tmp == -1)
 			break ;
-			
-		ans *= 10;
-		ans += *str - 48;
+		ans *= len;
+		ans += tmp;
 		str++;
 	}
 	ans *= m;
@@ -75,7 +77,7 @@ int	base_check(char *base, int *len)
 	return (1);
 }
 
-int ret_vlu(char *base, char find)
+int	ret_vlu(char *base, char find)
 {
 	int		i;
 	int		j;
