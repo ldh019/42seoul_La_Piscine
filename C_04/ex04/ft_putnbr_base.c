@@ -6,13 +6,15 @@
 /*   By: donghunl <donghunl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/12 16:02:46 by donghunl          #+#    #+#             */
-/*   Updated: 2022/01/12 19:56:29 by donghunl         ###   ########.fr       */
+/*   Updated: 2022/01/13 10:59:12 by donghunl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <stdio.h>
 
-int	base_check(char *base, int *len);
+int		base_check(char *base, int *len);
+void	rev_print(int nbr, char *base, int len);
 
 void	ft_putnbr_base(int nbr, char *base)
 {
@@ -25,20 +27,20 @@ void	ft_putnbr_base(int nbr, char *base)
 		write(1, "-", 1);
 		nbr *= -1;
 	}
+	rev_print(nbr, base, len);
 }
 
 int	base_check(char *base, int *len)
 {
 	int		i;
 	int		j;
-	int		tmp;
 
 	i = 0;
 	while (base[i] != '\0')
 	{
 		if (base[i] == '+' || base[i] == '-')
 			return (0);
-		j = 0;
+		j = i + 1;
 		while (base[j] != '\0')
 		{
 			if (base[i] == base[j])
@@ -51,4 +53,11 @@ int	base_check(char *base, int *len)
 		return (0);
 	*len = i;
 	return (1);
+}
+
+void	rev_print(int nbr, char *base, int len)
+{
+	if (nbr >= len)
+		rev_print(nbr / len, base, len);
+	write(1, &base[nbr % len], 1);
 }

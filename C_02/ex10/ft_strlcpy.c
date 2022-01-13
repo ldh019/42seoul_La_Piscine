@@ -6,11 +6,10 @@
 /*   By: donghunl <donghunl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 17:43:48 by donghunl          #+#    #+#             */
-/*   Updated: 2022/01/12 18:45:49 by donghunl         ###   ########.fr       */
+/*   Updated: 2022/01/13 10:42:04 by donghunl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 unsigned int	ft_strlcpy(char *dest, char *src, unsigned int size)
 {
 	unsigned int	i;
@@ -22,6 +21,8 @@ unsigned int	ft_strlcpy(char *dest, char *src, unsigned int size)
 	{
 		len++;
 	}
+	if (size == 0)
+		return (len);
 	while (i < len && i < size - 1)
 	{
 		dest[i] = src[i];

@@ -6,7 +6,7 @@
 /*   By: donghunl <donghunl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 18:05:26 by donghunl          #+#    #+#             */
-/*   Updated: 2022/01/12 19:11:40 by donghunl         ###   ########.fr       */
+/*   Updated: 2022/01/13 12:05:42 by donghunl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_putstr_non_printable(char *str)
 	i = 0;
 	while (r[i] != '\0')
 	{
-		if (r[i] < 32 || r[i] < 126)
+		if (r[i] < 32 || r[i] > 126)
 			hexa_nonprint(r[i]);
 		else
 			write(1, &r[i], 1);
