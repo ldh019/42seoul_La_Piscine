@@ -4,5 +4,5 @@ extern int ft_sqrt(int nb);
 
 int main()
 {
-	printf("%d", ft_sqrt(-48));
+	printf("%d", ft_sqrt(2147483643));
 }

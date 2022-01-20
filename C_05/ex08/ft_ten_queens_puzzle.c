@@ -6,43 +6,75 @@
 /*   By: donghunl <donghunl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 16:58:50 by donghunl          #+#    #+#             */
-/*   Updated: 2022/01/13 16:58:50 by donghunl         ###   ########.fr       */
+/*   Updated: 2022/01/17 20:05:35 by donghunl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 
-void display(int map[10][10], int *cnt, int dep);
+int	g_map[10];
+int	g_cnt;
 
-int	ft_ten_queens_puzzle(void)
+void	print(void)
 {
-	int map[10][10];
-	int i;
-	int j;
-	int cnt;
-
-	cnt = 0;
-	i = 0;
-	while(i < 10)
-	{
-		j = 0;
-		while(j < 10)
-			map[i][j] = 0;
-	}
-	display(map, &cnt, 0);
-	return (cnt);
-}
-
-void display(int map[10][10], int *cnt, int dep)
-{
-	int i;
+	int	i;
+	int	p;
 
 	i = 0;
 	while (i < 10)
 	{
-		if (map[dep][i] == 0)
-		{
-			map[dep][i] == 1;
-		} 
+		p = g_map[i] + 48;
+		write(1, &p, 1);
+		i++;
 	}
+	write(1, "\n", 1);
+}
+
+int	available(int idx, int n)
+{
+	int	i;
+
+	i = 1;
+	while (idx - i > -1)
+	{
+		if (g_map[idx - i] == n)
+			break ;
+		if (g_map[idx - i] == n - i)
+			break ;
+		if (g_map[idx - i] == n + i)
+			break ;
+		i++;
+	}
+	if (i <= idx)
+		return (0);
+	return (1);
+}
+
+void	recursive(int idx)
+{
+	int	i;
+
+	if (idx == 10)
+	{
+		g_cnt++;
+		print();
+		return ;
+	}
+	i = 0;
+	while (i < 10)
+	{
+		if (available(idx, i))
+		{
+			g_map[idx] = i;
+			recursive(idx + 1);
+		}
+		i++;
+	}
+}
+
+int	ft_ten_queens_puzzle(void)
+{
+	g_cnt = 0;
+	recursive(0);
+	return (g_cnt);
 }

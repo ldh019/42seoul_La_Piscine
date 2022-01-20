@@ -6,7 +6,7 @@
 /*   By: donghunl <donghunl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 14:43:18 by donghunl          #+#    #+#             */
-/*   Updated: 2022/01/13 14:43:36 by donghunl         ###   ########.fr       */
+/*   Updated: 2022/01/17 20:04:03 by donghunl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,5 +17,5 @@ int	ft_recursive_factorial(int nb)
 	else if (nb <= 1)
 		return (1);
 	else
-		return (nb * ft_iterative_factorial(nb - 1));
+		return (nb * ft_recursive_factorial(nb - 1));
 }
