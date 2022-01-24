@@ -5,7 +5,7 @@ void ft_show_tab(struct s_stock_str *par);
 
 int main(int ac, char **av)
 {
-	struct s_stock_str *chk = ft_strs_to_tab(ac, av);
+	t_stock_str	*chk = ft_strs_to_tab(ac - 1, av[1]);
 	ft_show_tab(chk);
 
 	return 0;
