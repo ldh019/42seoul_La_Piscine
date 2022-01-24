@@ -6,7 +6,7 @@
 /*   By: donghunl <donghunl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 11:13:19 by jiikang           #+#    #+#             */
-/*   Updated: 2022/01/24 13:59:20 by donghunl         ###   ########.fr       */
+/*   Updated: 2022/01/24 20:38:40 by donghunl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,28 @@
 #define BUFF_SIZE 3000
 #include "pair.h"
 #include <stdio.h>
+
+int	check_map(int **map, t_pair size)
+{
+	//map에 -1있으면 invalid임
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < size.y)
+	{
+		j = 0;
+		while (j < size.x)
+		{
+			if (map[i][j] == -1 || map[i][j] == 2)
+				return (0);
+			j++;
+		}
+		i++;
+	}
+	return (1);
+}
+//map이 vaild한지 검사함 1: 정상 0:오류
 
 int	read_row_line(char *filename)
 {
@@ -41,7 +63,7 @@ int	read_row_line(char *filename)
 	return (ret);
 }
 
-int	read_one_line(int fd, char *return_line, int line_length)
+int	read_one_line(int fd, char *return_line, int line_length, int flag)
 {
 	int		ret;
 	char	buff[1];
@@ -51,7 +73,7 @@ int	read_one_line(int fd, char *return_line, int line_length)
 	i = 0;
 	if (0 < fd)
 	{
-		while (0 < read(fd, buff, 1) && i < line_length)
+		while (0 < read(fd, buff, 1))
 		{
 			if (buff[0] == '\n')
 				break ;
@@ -60,11 +82,14 @@ int	read_one_line(int fd, char *return_line, int line_length)
 			ret++;
 		}
 	}
+	//printf("i is:%d, len: %d\n",i, line_length);
+	if ((i != line_length - 1) && flag)
+		return (-1);
 	return_line[i] = '\0';
 	return (ret);
 }
 //fd이용해서 한줄이 끝나거나 return_line의 길이가 끝날때 까지 return_line에 값을 집어넣어줌 & 끝에 \0
-//return은 array길이
+//return은 array길이, 에러면 (가로줄 길이 기댓값과 실제 길이가 같지 않으면) return -1
 
 int	check_letter_is_valid(char *letter)
 {
@@ -108,18 +133,22 @@ int	check_letter(char a, char *letter)
 	}
 	return (-1);
 }
-//0: 빈공간 1: 장애물 2:박스 (그럴 일 없음) -1:오류
+//0: 빈공간 1: 장애물 2:박스 -1:오류
 
 //row : 가로줄 길이
-int	*make_map(char *filename, int fd, int row, char *letter)
+int	*make_map(int fd, t_pair *size, char *letter)
 {
 	char	*temp;
 	int		*ret;
 	int		i;
+	int		row;
+	int		check_row;
 
+
+	row = (*size).x;
 	temp = (char *)malloc(sizeof(char) * (row + 1));
 	ret = (int *)malloc(sizeof(int) * (row + 1));
-	read_one_line(fd, temp, row + 1);
+	check_row = read_one_line(fd, temp, row + 1, 1);
 	temp[row] = 0;
 	i = 0;
 	while (i < row)
@@ -127,7 +156,10 @@ int	*make_map(char *filename, int fd, int row, char *letter)
 		ret[i] = check_letter(temp[i], letter);
 		i++;
 	}
+	if (check_row == -1)
+		ret[0] = -1;
 	ret[i] = 0;
+	//안끝났거나 빈거있으면 -1 넣으면 됨
 	return (ret);
 }
 
@@ -147,9 +179,10 @@ int	make_letter(char *letter, char *buff, int length)
 
 void make_pair(t_pair *size, int row, int column)
 {
-	size->x = row;
-	size->y = column;
+	(*size).x = row;
+	(*size).y = column;
 }
+
 //void return_file_content(char *filename, int **map, char *letter, t_pair *size) (pair : int y, int x)
 void	return_file_content(char *filename, int ***map, char *letter, t_pair *size) //letter가 이제 그거..그. 9.01이거.. size로 세로 가로 길이 줘야댐 에러면 0,0
 {
@@ -162,7 +195,7 @@ void	return_file_content(char *filename, int ***map, char *letter, t_pair *size)
 	fd = open(filename, O_RDONLY);
 	if (0 >= fd)
 		return ;
-	length = read_one_line(filename, fd, buff, BUFF_SIZE);
+	length = read_one_line(fd, buff, BUFF_SIZE, 0);
 	if (make_letter(letter, buff, length) == -1)
 		return ;
 	length = char_to_int(buff);
@@ -174,9 +207,10 @@ void	return_file_content(char *filename, int ***map, char *letter, t_pair *size)
 	if (row == 0)
 		return ;
 	make_pair(size, row, char_to_int(buff));
-	i = 0;
-	while (i < length)
-		(*map)[i++] = make_map(filename, fd, row, letter);
+	i = -1;
+
+	while (i++ < length)
+		(*map)[i] = make_map(fd, size, letter);
 	close(fd);
 }
 // 	read first line

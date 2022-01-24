@@ -6,25 +6,25 @@
 /*   By: donghunl <donghunl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 13:29:03 by donghunl          #+#    #+#             */
-/*   Updated: 2022/01/24 12:31:54 by donghunl         ###   ########.fr       */
+/*   Updated: 2022/01/24 19:38:58 by donghunl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pair.h"
 #include <unistd.h>
-
-void	fill_map(int *ans, int **map, t_pair a)
+#include <stdio.h>
+void	fill_map(int *ans, int **map)
 {
 	int	i;
 	int	j;
-
-	i = a.y - ans[0];
-	while (++i <= a.y)
+	
+	i = -1;
+	while (++i < ans[0])
 	{
-		j = a.x - ans[0];
-		while (++j <= a.x)
+		j = -1;
+		while (++j < ans[0])
 		{
-			map[i][j] = 2;
+			map[ans[1] - i][ans[2] - j] = 2;
 		}
 	}
 }

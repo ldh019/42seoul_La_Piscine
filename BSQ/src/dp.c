@@ -6,32 +6,46 @@
 /*   By: donghunl <donghunl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 11:40:24 by donghunl          #+#    #+#             */
-/*   Updated: 2022/01/24 12:32:24 by donghunl         ###   ########.fr       */
+/*   Updated: 2022/01/24 20:58:24 by donghunl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
 #include "pair.h"
+#include <stdio.h>
 
-extern void	fill_map(int *ans, int **map, t_pair a);
+extern void	print(int **map, char *letter, t_pair a);
+extern void	fill_map(int *ans, int **map);
 
-int	min(int a, int b, int c)
+int	min(int **dp, int y, int x)
 {
-	if (a <= b && a <= c)
-		return (a);
-	else if (b <= a && b <= c)
-		return (b);
-	return (c);
+	if (y == 0 || x == 0)
+		return (0);
+	else
+	{
+		if (dp[y - 1][x] <= dp[y - 1][x - 1] && dp[y - 1][x] <= dp[y][x - 1])
+			return (dp[y - 1][x]);
+		else if (dp[y - 1][x - 1] <= dp[y - 1][x] && dp[y - 1][x - 1] <= dp[y][x - 1])
+			return (dp[y - 1][x - 1]);
+		else if (dp[y][x - 1] <= dp[y - 1][x] && dp[y][x - 1] <= dp[y - 1][x - 1])
+			return (dp[y][x - 1]);
+	}
+	return (0);
 }
 
-int	*dynamic(int **map, int **dp, t_pair a)
+void	ans_set(int *ans, int v, int y, int x)
 {
-	int	*ans;
+	ans[0] = v;
+	ans[1] = y;
+	ans[2] = x;
+}
+
+int	*dynamic(int **map, int ***dp, int *ans, t_pair a)
+{
 	int	i;
 	int	j;
 
-	ans = (int *) malloc(12);
 	ans[0] = 0;
 	i = -1;
 	while (++i < a.y)
@@ -39,16 +53,11 @@ int	*dynamic(int **map, int **dp, t_pair a)
 		j = -1;
 		while (++j < a.x)
 		{
-			if (map[i][j] == 1)
+			if (map[i][j] == 0)
 			{
-				dp[i][j] = min(dp[i - 1][j], dp[i][j - 1],
-						dp[i - 1][j - 1]) + 1;
-				if (dp[i][j] > ans[0])
-				{
-					ans[0] = dp[i][j];
-					ans[1] = i;
-					ans[2] = j;
-				}
+				(*dp)[i][j] = min(*dp, i, j) + 1;
+				if ((*dp)[i][j] > ans[0])
+					ans_set(ans, (*dp)[i][j], i, j);
 			}
 		}
 	}
@@ -60,14 +69,12 @@ void	execute(int **map, t_pair a)
 	int		**dp;
 	int		*ans;
 	int		i;
-	t_pair	fill;
 
+	ans = (int *) malloc(12);
 	dp = (int **) malloc(sizeof(int *) * a.y);
 	i = -1;
 	while (++i < a.y)
 		dp[i] = (int *) malloc(sizeof(int) * a.x);
-	ans = dynamic(map, dp, a);
-	fill.y = ans[1];
-	fill.x = ans[2];
-	fill_map(ans, map, fill);
+	ans = dynamic(map, &dp, ans, a);
+	fill_map(ans, map);
 }
