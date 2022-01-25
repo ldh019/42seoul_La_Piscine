@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_input.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: donghunl <donghunl@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jiikang <jiikang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 11:13:19 by jiikang           #+#    #+#             */
-/*   Updated: 2022/01/24 20:38:40 by donghunl         ###   ########.fr       */
+/*   Updated: 2022/01/25 21:45:12 by jiikang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,31 +136,64 @@ int	check_letter(char a, char *letter)
 //0: 빈공간 1: 장애물 2:박스 -1:오류
 
 //row : 가로줄 길이
-int	*make_map(int fd, t_pair *size, char *letter)
+// void make_map(int fd, t_pair *size, char *letter, int *ret)
+// {
+// 	char	*temp;
+// 	int		i;
+// 	int		row;
+// 	int		check_row;
+
+
+// 	row = (*size).x;
+// 	temp = (char *)malloc(sizeof(char) * (row + 1));
+// 	check_row = read_one_line(fd, temp, row + 1, 1);
+// 	temp[row] = 0;
+// 	i = 0;
+// 	while (i < row)
+// 	{
+// 		ret[i] = check_letter(temp[i], letter);
+// 		i++;
+// 	}
+// 	if (check_row == -1)
+// 		ret[0] = -1;
+// 	ret[i] = 0;
+// 	//안끝났거나 빈거있으면 -1 넣으면 됨
+// 	free(temp);
+// }
+
+void	make_map(char *filename, int **map, char *letter, t_pair *size)
 {
+	char	buff[15];
 	char	*temp;
-	int		*ret;
+	int		fd;
 	int		i;
-	int		row;
-	int		check_row;
+	int		j;
 
-
-	row = (*size).x;
-	temp = (char *)malloc(sizeof(char) * (row + 1));
-	ret = (int *)malloc(sizeof(int) * (row + 1));
-	check_row = read_one_line(fd, temp, row + 1, 1);
-	temp[row] = 0;
-	i = 0;
-	while (i < row)
+	temp = (char *)malloc(sizeof(char) * (size.x + 1));
+	fd = open(filename, O_RDONLY);
+	if (0 >= fd)
+		return ;
+	read_one_line(fd, buff, 15, 0);
+	i = read_one_line(fd, temp, size.x + 1, 1);
+	if (i == -1)
 	{
-		ret[i] = check_letter(temp[i], letter);
+		map[0][0] = -1;
+		free (temp);
+		return ;
+	}
+	i = 0;
+	while (i < (*size).y)
+	{
+		j = 0;
+		while (j < (*size).x)
+		{
+			map[i][j] = check_letter(temp[j], letter);
+			j++;
+		}
 		i++;
 	}
-	if (check_row == -1)
-		ret[0] = -1;
-	ret[i] = 0;
-	//안끝났거나 빈거있으면 -1 넣으면 됨
-	return (ret);
+
+	free(temp);
 }
 
 int	make_letter(char *letter, char *buff, int length)
@@ -184,7 +217,7 @@ void make_pair(t_pair *size, int row, int column)
 }
 
 //void return_file_content(char *filename, int **map, char *letter, t_pair *size) (pair : int y, int x)
-void	return_file_content(char *filename, int ***map, char *letter, t_pair *size) //letter가 이제 그거..그. 9.01이거.. size로 세로 가로 길이 줘야댐 에러면 0,0
+void	return_file_content(char *filename, char *letter, t_pair *size) //letter가 이제 그거..그. 9.01이거.. size로 세로 가로 길이 줘야댐 에러면 0,0
 {
 	char	buff[BUFF_SIZE];
 	int		fd;
@@ -201,16 +234,10 @@ void	return_file_content(char *filename, int ***map, char *letter, t_pair *size)
 	length = char_to_int(buff);
 	if (length == -1)
 		return ;
-	*map = (int **)malloc(sizeof(int *) * (length + 1));
-	map[length] = 0;
 	row = read_row_line(filename);
 	if (row == 0)
 		return ;
 	make_pair(size, row, char_to_int(buff));
-	i = -1;
-
-	while (i++ < length)
-		(*map)[i] = make_map(fd, size, letter);
 	close(fd);
 }
 // 	read first line
