@@ -3,33 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiikang <jiikang@student.42.fr>            +#+  +:+       +#+        */
+/*   By: donghunl <donghunl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/22 12:27:09 by donghunl          #+#    #+#             */
-/*   Updated: 2022/01/25 21:47:08 by jiikang          ###   ########.fr       */
+/*   Updated: 2022/01/26 17:30:42 by donghunl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fcntl.h>
 #include <unistd.h>
-#include "pair.h"
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include "pair.h"
+#include "execute.h"
 
-extern void	execute(int **map, t_pair a);
-extern void	return_file_content(char *file_name, int ***map,
-				char *letter, t_pair *size);
-extern void	print(int **map, char *letter, t_pair a);
-extern int	check_map(int **map, t_pair size);
-extern void	make_map(char *filename, int **map, char *letter, t_pair *size);
+void	ft_free(int **map, int y)
+{
+	int	i;
 
-char *file_make()
+	i = 0;
+	while (i < y)
+	{
+		free(map[i++]);
+	}
+	free(map);
+}
+
+char	*file_make(void)
 {
 	char	buf;
 	int		fd;
-	char	*ret = "donghun.txt";
+	char	*ret;
 
+	ret = "donghun.txt";
 	fd = open(ret, O_RDWR | O_TRUNC | O_CREAT, 0644);
 	while (read(0, &buf, 1))
 		write(fd, &buf, 1);
@@ -41,39 +46,33 @@ void	ft_main(int argc, char **argv)
 {
 	int		file_index;
 	int		**map;
-	char	*letter;
-	char	*tmp;
+	char	letter[3];
 	int		i;
-
 	t_pair	size;
-	file_index = 1;
-	letter = (char *) malloc(3);
-	while (file_index < argc)
+
+	file_index = 0;
+	while (++file_index < argc)
 	{
 		size.x = 0;
 		size.y = 0;
-		tmp = strdup(argv[file_index]);
-		return_file_content(tmp, &map, letter, &size);
+		return_file_content(argv[file_index], letter, &size);
 		map = (int **)malloc(sizeof(int *) * (size.y + 1));
-		i = 0;
-		while (i < size.y)
-		{
-			map[i++] = (int *)malloc(sizeof(int) * (size.x + 1));
-		}
+		i = -1;
+		while (++i < size.y)
+			map[i] = (int *)malloc(sizeof(int) * (size.x + 1));
 		make_map(argv[file_index], map, letter, &size);
-		if (size.y > 0 && size.x > 0 && check_map(map, size)) 
+		if (size.y > 0 && size.x > 0 && check_map(map, size))
 		{
 			execute(map, size);
 			print(map, letter, size);
 		}
 		else
 			write(2, "map error\n", 17);
-		file_index++;
 	}
+	ft_free(map, size.y);
 }
 
-
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	char	**tmp_argv;
 
@@ -86,5 +85,6 @@ int main(int argc, char **argv)
 	}
 	else
 		ft_main(argc, argv);
+	system("leaks bsq");
 	return (0);
 }

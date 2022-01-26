@@ -6,17 +6,13 @@
 /*   By: donghunl <donghunl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 11:40:24 by donghunl          #+#    #+#             */
-/*   Updated: 2022/01/24 20:58:24 by donghunl         ###   ########.fr       */
+/*   Updated: 2022/01/26 17:33:33 by donghunl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include <stdlib.h>
 #include "pair.h"
-#include <stdio.h>
-
-extern void	print(int **map, char *letter, t_pair a);
-extern void	fill_map(int *ans, int **map);
+#include "execute.h"
 
 int	min(int **dp, int y, int x)
 {
@@ -26,9 +22,11 @@ int	min(int **dp, int y, int x)
 	{
 		if (dp[y - 1][x] <= dp[y - 1][x - 1] && dp[y - 1][x] <= dp[y][x - 1])
 			return (dp[y - 1][x]);
-		else if (dp[y - 1][x - 1] <= dp[y - 1][x] && dp[y - 1][x - 1] <= dp[y][x - 1])
+		else if (dp[y - 1][x - 1] <= dp[y - 1][x]
+			&& dp[y - 1][x - 1] <= dp[y][x - 1])
 			return (dp[y - 1][x - 1]);
-		else if (dp[y][x - 1] <= dp[y - 1][x] && dp[y][x - 1] <= dp[y - 1][x - 1])
+		else if (dp[y][x - 1] <= dp[y - 1][x]
+			&& dp[y][x - 1] <= dp[y - 1][x - 1])
 			return (dp[y][x - 1]);
 	}
 	return (0);
@@ -77,4 +75,9 @@ void	execute(int **map, t_pair a)
 		dp[i] = (int *) malloc(sizeof(int) * a.x);
 	ans = dynamic(map, &dp, ans, a);
 	fill_map(ans, map);
+	free(ans);
+	i = 0;
+	while (i < a.y)
+		free(dp[i++]);
+	free(dp);
 }

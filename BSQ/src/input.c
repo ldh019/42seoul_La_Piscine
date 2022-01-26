@@ -1,47 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   finish.c                                           :+:      :+:    :+:   */
+/*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: donghunl <donghunl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/23 13:29:03 by donghunl          #+#    #+#             */
-/*   Updated: 2022/01/26 13:27:59 by donghunl         ###   ########.fr       */
+/*   Created: 2022/01/23 11:13:19 by jiikang           #+#    #+#             */
+/*   Updated: 2022/01/26 15:23:06 by donghunl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pair.h"
-#include <unistd.h>
+#include "input.h"
 
-void	fill_map(int *ans, int **map)
+int	check_map(int **map, t_pair size)
 {
 	int	i;
 	int	j;
 
-	i = -1;
-	while (++i < ans[0])
+	i = 0;
+	while (i < size.y)
 	{
-		j = -1;
-		while (++j < ans[0])
+		j = 0;
+		while (j < size.x)
 		{
-			map[ans[1] - i][ans[2] - j] = 2;
+			if (map[i][j] == -1 || map[i][j] == 2)
+				return (0);
+			j++;
 		}
+		i++;
 	}
+	return (1);
 }
 
-void	print(int **map, char *letter, t_pair a)
+void	put_line(char *temp, int **map, char *letter, int num)
 {
 	int	i;
-	int	j;
 
-	i = -1;
-	while (++i < a.y)
+	i = 0;
+	while (temp[i] != '\0')
 	{
-		j = -1;
-		while (++j < a.x)
-		{
-			write(1, &letter[map[i][j]], 1);
-		}
-		write(1, "\n", 1);
+		map[num][i] = check_letter(temp[i], letter);
+		i++;
 	}
+	map[num][i] = '\0';
 }
